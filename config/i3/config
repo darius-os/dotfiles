@@ -7,8 +7,8 @@ for_window [class="^.*"] border pixel 0
 focus_follows_mouse no
 floating_modifier $mod
 
-gaps inner 5
-gaps outer 5
+gaps inner 10
+gaps outer -2
 smart_borders on
 
 # exec_always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -17,6 +17,7 @@ exec --no-startup-id unclutter -idle 1 -root
 exec_always --no-startup-id xset r rate 300 50
 exec --no-startup-id ~/.fehbg
 exec_always --no-startup-id xcompmgr -C -n -f
+# exec --no-startup-id tint2
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -25,11 +26,16 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
 bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
+bindsym Print exec --no-startup-id i3-scrot
+bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
+bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
+
+bindsym Mod1+space exec --no-startup-id sgtk-grid
 bindsym $mod+Return exec $term
-bindsym Mod1+Return exec $term -e nvim
+# bindsym Mod1+Return exec $term -e i3fyra -a
 bindsym Mod1+Control+r exec $term -e ranger
 bindsym $mod+n exec $term -e nmon
-bindsym $mod+v exec $term -e nvim ~/.config/nvim/init.vim
+# bindsym $mod+v exec $term -e nvim ~/.config/nvim/init.vim
 bindsym $mod+z exec $term -e nvim ~/.zshrc
 bindsym $mod+i exec $term -e nvim ~/.config/i3/config
 
@@ -41,11 +47,14 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+s sticky toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
+#bindsym $mod+Shift+minus move scratchpad
+#bindsym $mod+minus scratchpad show
 
-bindsym Control+$mod+l split h
-bindsym Control+$mod+k split v
+bindsym $mod+l split h
+bindsym $mod+k split v
 
 bindsym Mod1+Control+b exec brave
 bindsym Mod1+Control+i exec brave -incognito
@@ -66,6 +75,9 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
+
+for_window [title="~sgtk-"] border none, floating enable
+
 
 set $ws1 1
 set $ws2 2
@@ -199,21 +211,22 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
+#bar {
+#	font pango:mono 10
+#	status_command ~/.config/i3/i3blocks.conf
+#	position top
+#	mode dock
+#	modifier None
+#}
 
-# bar {
-#     position bottom
-#     status_command i3blocks -c ~/.config/i3/i3blocks.conf
-#     colors {
-#         # bar background color
-#         background $bg
-#         # text color used for blocks that do not have a color specified.
-#         statusline $yellow
-#         # workspaces section
-#         #                    border  backgr. text
-#         focused_workspace    $aqua $aqua $darkgray
-#         inactive_workspace   $darkgray $darkgray $yellow
-#         active_workspace     $darkgray $darkgray $yellow
-#         urgent_workspace     $red $red $bg
-#     }
-# }
-
+#bindsym $mod+plus		exec --no-startup-id amixer sset Master 5%+ && pkill -RTMIN+10 i3blocks
+#bindsym $mod+Shift+plus		exec --no-startup-id amixer sset Master 15%+ && pkill -RTMIN+10 i3blocks
+#bindsym $mod+minus 		exec --no-startup-id amixer sset Master 5%- && pkill -RTMIN+10 i3blocks
+#bindsym $mod+Shift+minus	exec --no-startup-id amixer sset Master 15%- && pkill -RTMIN+10 i3blocks
+#bindsym XF86AudioMute		exec --no-startup-id amixer sset Master toggle && pkill -RTMIN+10 i3blocks
+#bindsym XF86AudioLowerVolume	exec --no-startup-id amixer sset Master 5%- && pkill -RTMIN+10 i3blocks
+#bindsym Shift+XF86AudioLowerVolume	exec --no-startup-id amixer sset Master 10%- && pkill -RTMIN+10 i3blocks
+#bindsym Control+XF86AudioLowerVolume	exec --no-startup-id amixer sset Master 1%- && pkill -RTMIN+10 i3blocks
+#bindsym XF86AudioRaiseVolume	exec --no-startup-id amixer sset Master 5%+ && pkill -RTMIN+10 i3blocks
+#bindsym Shift+XF86AudioRaiseVolume	exec --no-startup-id amixer sset Master 10%+ && pkill -RTMIN+10 i3blocks
+#bindsym Control+XF86AudioRaiseVolume	exec --no-startup-id amixer sset Master 1%+ && pkill -RTMIN+10 i3blocks
