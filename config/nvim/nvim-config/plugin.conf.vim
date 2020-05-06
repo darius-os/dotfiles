@@ -1,9 +1,3 @@
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['~/code/python/general/venv/bin/python'],
-    \ }
-
-
 nmap <silent><leader>k :NERDTreeToggle<CR>
 " nmap <silent> <leader><leader>y :NERDTreeFind<CR>
 
@@ -15,8 +9,6 @@ let g:NERDTreeAutoDeleteBuffer = 1
 let g:deoplete#enable_at_startup =1
 
 let g:airline_theme='dracula'
-
-let g:codestats_api_key = 'SFMyNTY.WkdGeWFYVnpYMlZzYVdwaGFBPT0jI09UWTVOZz09.Uvvhgpc2A3kraVdmWVkcBY61atlmejmHwHJqiGv1WLo'
 
 " let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsJumpForwardTrigger="<c-b>"
