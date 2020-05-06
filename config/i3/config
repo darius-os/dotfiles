@@ -3,7 +3,7 @@ set $term --no-startup-id $TERMINAL
 set $file --no-startup-id $FILE
 set $refresh_i3status killall -SIGUSR1 i3status
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 focus_follows_mouse no
 floating_modifier $mod
 
@@ -11,13 +11,11 @@ gaps inner 10
 gaps outer -2
 smart_borders on
 
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # exec_always --no-startup-id xcompmgr -o .90 -O 0.04 -C
 exec --no-startup-id unclutter -idle 1 -root
 exec_always --no-startup-id xset r rate 300 50
 exec --no-startup-id ~/.fehbg
 exec_always --no-startup-id xcompmgr -C -n -f
-# exec --no-startup-id tint2
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -61,9 +59,9 @@ bindsym Mod1+Control+i exec brave -incognito
 bindsym Mod1+Control+c exec google-chrome-stable
 bindsym Mod1+Control+n exec $file
 bindsym Mod1+Control+t exec telegram-desktop
-bindsym Mod1+Control+l exec leafpad
+# bindsym Mod1+Control+l exec leafpad
 bindsym Mod1+Control+p exec pycharm
-bindsym Mod1+Control+s exec soulseekqt
+# bindsym Mod1+Control+s exec soulseekqt
 bindsym Mod1+Control+e exec evince
 bindsym Mod1+Control+g exec --no-startup-id gnome-screenshot -i
 
@@ -159,22 +157,6 @@ bindsym $mod+r mode "resize"
  client.background       #2B2C2B
 
 
-# Additional commands with different syntax. This is useful to bind keys to changing the gap size.
-# gaps inner|outer current|all set|plus|minus <px>
-# gaps inner all set 5
-# gaps outer all plus 5
-
-# Smart gaps (gaps used if only more than one container on the workspace)
-# smart_gaps on
-
-# Smart borders (draw borders around container only if it is not the only container on this workspace)
-# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
-
-# Press $mod+Shift+g to enter the gap mode.
-# Choose o or i for modifying outer/inner gaps.
-# Press one of + / - (in-/decrement for current workspace)
-# or 0 (remove gaps for current workspace). If you also press Shift
-# with these keys, the change will be global for all workspaces.
 set $mode_gaps Gaps: (o) outer, (i) inner
 set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
 set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
@@ -211,13 +193,6 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
-#bar {
-#	font pango:mono 10
-#	status_command ~/.config/i3/i3blocks.conf
-#	position top
-#	mode dock
-#	modifier None
-#}
 
 #bindsym $mod+plus		exec --no-startup-id amixer sset Master 5%+ && pkill -RTMIN+10 i3blocks
 #bindsym $mod+Shift+plus		exec --no-startup-id amixer sset Master 15%+ && pkill -RTMIN+10 i3blocks
