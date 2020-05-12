@@ -7,8 +7,24 @@ export UPDATE_ZSH_DAYS=13
 ZSH_THEME="minimal"
 HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(git zsh-syntax-highlighting sudo copyfile colored-man-pages
-    python ripgrep taskwarrior vi-mode command-not-found)
+plugins=(
+    git
+    github
+    zsh-syntax-highlighting
+    sudo
+    copyfile
+    colored-man-pages
+    python
+    fzf
+    ripgrep
+    taskwarrior
+    postgres
+    vi-mode
+    command-not-found
+    catimg
+    emoji
+    emoji-clock
+)
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -20,10 +36,11 @@ fi
 
 #Ubuntu
 export PATH=$HOME/bin:$PATH
-export PATH=$PATH:/usr/local/bin:$PATH
-export PATH=$PATH:~/bin:~/bin/scripts:$PATH
-export PATH=$PATH:~/.local/bin:$PATH
+export PATH=/usr/local/bin:$PATH
+export PATH=~/bin:~/bin/scripts:$PATH
+export PATH=:$HOME/.local/bin:$PATH
 export PATH=$HOME/.nimble/bin:$PATH
+export PATH=$( printf "%s" "$PATH" | awk -v RS=':' '!a[$1]++ { if (NR > 1) printf RS; printf $1 }')
 
 export TERM="xterm-256color"
 export EDITOR="nvim"
@@ -56,7 +73,6 @@ export ARCHFLAGS="-arch x86_64"
 
 #Arch Linux
 #export FBFONT=/usr/share/kbd/consolefonts/ter-216n.psf.gz
-#export SBCL_HOME=/home/darius/.roswell/impls/x86-64/linux/sbcl-bin/2.0.1/lib/sbcl
 #export LANG=en_US.UTF-8
 #export LC_ALL=en_US.UTF-8
 #export LC_CTYPE=en_US.UTF-8
@@ -97,8 +113,22 @@ alias el="exa -lh -F --icons"
 alias exl="exa -lha -F --icons"
 alias exla="exa -abghHliS -F --icons"
 alias exat="exa -lTh -F --icons"
+alias exd="exa -ldhg"
 alias exatt="exa -abghHliST -F --icons"
-alias vinvim="vi ~/.config/nvim/init.vim"
+alias vizsh="nvim ~/.zshrc"
+alias vinvim="nvim ~/.config/nvim/init.vim"
+alias clr="clear"
+alias copy='xsel --clipboard --input'
+alias ping="prettyping --nolegend"
+alias vi="nvim"
+alias mkdir="mkdir -pv"
+alias failed="systemctl --failed"
+alias journal="sudo journalctl -p 3 -xb"
+alias cached="rm -rf ~/.cache/*"
+alias du="ncdu --color dark -rr -x --exclude .git"
+alias cb="cd ~/bin/"
+alias cbl="cd ~/.local/bin"
+alias pvnv="source ~/code/python/general/venv/bin/activate"
 
 # protonvpn
 alias pvpnr="sudo protonvpn r"
@@ -115,6 +145,7 @@ alias pvpnd="sudo protonvpn d"
 #alias exla="exa -abghHliS -F --icons"
 #alias exat="exa -lTh -F --icons"
 #alias exatt="exa -abghHliST -F --icons"
+#alias exd="exa -ldhg */"
 #alias mkdir="mkdir -pv"
 #alias vi="nvim"
 #alias clr="clear"
@@ -150,7 +181,6 @@ alias pvpnd="sudo protonvpn d"
 #alias vi3="vi ~/.config/i3/config"
 #alias vinvim="vi ~/.config/nvim/init.vim"
 
-# protonvpn
 #alias pvpnr="sudo protonvpn r"
 #alias pvpns="sudo protonvpn s"
 #alias pvpnc="sudo protonvpn c"
@@ -159,7 +189,6 @@ alias pvpnd="sudo protonvpn d"
 #alias pvpnsc="sudo protonvpn c --sc"
 #alias pvpnd="sudo protonvpn d"
 
-# system maintenance
 #alias failed="systemctl --failed"
 #alias journal="sudo journalctl -p 3 -xb"
 #alias cached="rm -rf ~/.cache/*"

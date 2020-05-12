@@ -1,53 +1,56 @@
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
+	echo "Downloading junegunn/vim-plug to manage plugins..."
+	silent !mkdir -p ~/.config/nvim/autoload/
+	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.config/nvim/autoload/plug.vim
+	autocmd VimEnter * PlugInstall
 endif
+
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'chrisbra/csv.vim'
 Plug 'frazrepo/vim-rainbow'
-Plug 'davidgranstrom/scnvim'
-Plug 'SirVer/ultisnips'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
+Plug 'liuchengxu/vim-which-key'
+Plug 'junegunn/goyo.vim'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'glts/vim-radical'
+" Plug 'mhinz/vim-startify'
+Plug 'voldikss/vim-floaterm'
+Plug 'airblade/vim-rooter'
+Plug 'liuchengxu/vista.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'alvan/vim-closetag'
 Plug 'scrooloose/nerdtree'
-Plug 'easymotion/vim-easymotion'
+Plug 'justinmk/vim-sneak'
+Plug 'unblevable/quick-scope'
+Plug 'rbgrouleff/bclose.vim'
+" Plug 'SirVer/ultisnips'
+Plug 'neomake/neomake'
+Plug 'norcalli/nvim-colorizer.lua'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'https://gitlab.com/code-stats/code-stats-vim.git'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/gv.vim'
+Plug 'kaicataldo/material.vim'
+Plug 'joshdick/onedark.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'sheerun/vim-polyglot'
 Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'jlanzarotta/bufexplorer'
 Plug 'ryanoasis/vim-devicons'
+Plug 'dahu/VimRegexTutor'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " Unused
-" Plug 'joshdick/onedark.vim'
-" Plug 'pbrisbin/vim-mkdir'
-" Plug 'jkramer/vim-checkbox', { 'for': 'markdown' }
-" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" Plug 'junegunn/goyo.vim'
-" Plug 'chrisbra/NrrwRgn'
-" Plug 'dahu/VimRegexTutor'
 " Plug 'kovisoft/slimv'
-" from current buffer
 " Plug 'ncm2/vlime'
 " Plug 'l04m33/vlime', {'rtp': 'vim/'}
-" Plug 'davidhalter/jedi-vim'
 " Plug 'guns/vim-sexp'
 " Plug 'tpope/vim-sexp-mappings-for-regular-people'
 " Plug 'vimlab/split-term.vim'
-" Plug 'jalvesaq/vimcmdline'
+
+call plug#end()
