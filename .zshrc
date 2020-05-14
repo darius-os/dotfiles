@@ -40,6 +40,8 @@ export PATH=/usr/local/bin:$PATH
 export PATH=~/bin:~/bin/scripts:$PATH
 export PATH=:$HOME/.local/bin:$PATH
 export PATH=$HOME/.nimble/bin:$PATH
+export PATH=$HOME/.emacs.d/bin:$PATH
+export PATH=$HOME:~/.roswell/bin:$PATH
 export PATH=$( printf "%s" "$PATH" | awk -v RS=':' '!a[$1]++ { if (NR > 1) printf RS; printf $1 }')
 
 export TERM="xterm-256color"
