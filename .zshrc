@@ -107,6 +107,7 @@ export ARCHFLAGS="-arch x86_64"
 #--------------------------------------------#
 # Ubuntu
 
+alias pva="source ~/.local/share/main-venv/bin/activate"
 alias update="sudo apt-get update"
 alias upgrade="sudo apt-get upgrade"
 alias install="sudo apt-get install"
