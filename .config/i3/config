@@ -3,22 +3,27 @@ set $term --no-startup-id $TERMINAL
 set $file --no-startup-id $FILE
 set $refresh_i3status killall -SIGUSR1 i3status
 
-for_window [class="^.*"] border pixel 2
+#font xft:FiraCode-Retina 12
+font pango:monospace 8
+
 focus_follows_mouse no
 floating_modifier $mod
 
-gaps inner 10
-gaps outer -2
+gaps inner 14
+gaps outer 8
 smart_borders on
 
-# exec_always --no-startup-id xcompmgr -o .90 -O 0.04 -C
-exec --no-startup-id unclutter -idle 1 -root
-exec_always --no-startup-id xset r rate 300 50
 exec --no-startup-id ~/.fehbg
-exec_always --no-startup-id xcompmgr -C -n -f
-
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+exec --no-startup-id nm-applet
+exec --no-startup-id dropbox
+exec --no-startup-id unclutter -idle 1 -root
+#exec --no-startup-id caffeine
+exec --no-startup-id dunst
+exec --no-startup-id xcompmgr -C -n -f
+#exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
+# exec_always --no-startup-id xset r rate 300 50
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
@@ -27,27 +32,28 @@ bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness 
 bindsym Print exec --no-startup-id i3-scrot
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
-
 bindsym Mod1+space exec --no-startup-id sgtk-grid
+
 bindsym $mod+Return exec $term
 # bindsym Mod1+Return exec $term -e i3fyra -a
-bindsym Mod1+Control+r exec $term -e ranger
+bindsym Mod1+Control+r exec $term -e ~/.local/bin/vifmrun
 bindsym $mod+n exec $term -e nmon
 # bindsym $mod+v exec $term -e nvim ~/.config/nvim/init.vim
 bindsym $mod+z exec $term -e nvim ~/.zshrc
 bindsym $mod+i exec $term -e nvim ~/.config/i3/config
 
 bindsym $mod+q kill
-bindsym $mod+d exec --no-startup-id rofi -show drun
+bindsym $mod+Mod1+d exec --no-startup-id rofi -show drun
 
 bindsym $mod+f fullscreen toggle
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+# bindsym $mod+s layout stacking
+# bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+space floating toggle
 bindsym $mod+Shift+s sticky toggle
-bindsym $mod+space focus mode_toggle
-bindsym $mod+a focus parent
+bindsym $mod+Shift+space focus mode_toggle
+bindsym $mod+t bar hidden_state toggle
+# bindsym $mod+a focus parent
 #bindsym $mod+Shift+minus move scratchpad
 #bindsym $mod+minus scratchpad show
 
@@ -60,33 +66,38 @@ bindsym Mod1+Control+c exec google-chrome-stable
 bindsym Mod1+Control+n exec $file
 bindsym Mod1+Control+t exec telegram-desktop
 # bindsym Mod1+Control+l exec leafpad
-bindsym Mod1+Control+p exec pycharm
 # bindsym Mod1+Control+s exec soulseekqt
 bindsym Mod1+Control+e exec evince
 bindsym Mod1+Control+g exec --no-startup-id gnome-screenshot -i
 
-bindsym Mod1+l focus left
-bindsym Mod1+j focus down
-bindsym Mod1+k focus up
-bindsym Mod1+h focus right
+bindsym $mod+a focus left
+bindsym $mod+s focus down
+bindsym $mod+w focus up
+bindsym $mod+d focus right
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 for_window [title="~sgtk-"] border none, floating enable
+for_window [class="^.*"] border pixel 2
+for_window [class=Idea|Google-chrome-stable|Vscodium|Evince] focus
+for_window [class="^jetbrains-.+"][window_type=dialog] focus
+for_window [class="^idea+"][window_type=dialog] focus
 
+floating_minimum_size 500 x 500
+floating_maximum_size -1 x -1
 
-set $ws1 1
-set $ws2 2
-set $ws3 3
-set $ws4 4
-set $ws5 5
-set $ws6 6
-set $ws7 7
-set $ws8 8
-set $ws9 9
-set $ws10 10
+set $ws1 1 : 
+set $ws2 2 : 
+set $ws3 3 : 
+set $ws4 4 : 
+set $ws5 5 : 
+set $ws6 6 : 
+set $ws7 7 : 
+set $ws8 8 : 
+set $ws9 9 : 
+set $ws10 10 : 
 
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -193,6 +204,47 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
+bar {
+#    font pango:DejaVu Sans, Font Awesome 20 Free Solid 12
+    font pango:Font Awesome 10 Free Solid
+    status_command i3blocks -c ~/.config/i3/i3blocks/config
+    i3bar_command i3bar -t
+    position top
+    tray_output primary
+    hidden_state show
+    verbose yes
+    colors {
+        separator #969896
+        background #2e3440
+        #statusline #c5c8c6
+        statusline #394B4A
+        focused_workspace #81a2be #81a2be #1d1f21
+        active_workspace #373b41 #373b41 #ffffff
+        inactive_workspace #282a2e #282a2e #969896
+        urgent_workspace #cc6666 #cc6666 #ffffff
+    }
+}
+
+
+#bar {
+#        colors {
+#        background #2f343f
+#        statusline #2f343f
+#        separator #4b5262
+#
+#        focused_workspace       #2f343f #bf616a #d8dee8
+#        active_workspace        #2f343f #2f343f #d8dee8
+#        inactive_workspace      #2f343f #2f343f #d8dee8
+#        urgent_workspacei       #2f343f #ebcb8b #2f343f
+#    }
+#        status_command i3status
+#        tray_output primary
+#}
+
+#bar {
+#  mode hide
+#  i3bar_command $HOME/.config/polybar/launch.sh
+#}
 
 #bindsym $mod+plus		exec --no-startup-id amixer sset Master 5%+ && pkill -RTMIN+10 i3blocks
 #bindsym $mod+Shift+plus		exec --no-startup-id amixer sset Master 15%+ && pkill -RTMIN+10 i3blocks

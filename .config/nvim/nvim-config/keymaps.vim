@@ -8,7 +8,7 @@ nnoremap <M-k>    :resize +2<CR>
 nnoremap <M-h>    :vertical resize -2<CR>
 nnoremap <M-l>    :vertical resize +2<CR>
 
-" I hate escape more than anything else
+" esc key alternative
 inoremap jk <Esc>
 inoremap kj <Esc>
 
@@ -37,8 +37,6 @@ map <C-l> <C-w>l
 
 nnoremap <Leader>o o<Esc>^Da
 nnoremap <Leader>O O<Esc>^Da
-
-" disabling arrow keys
 
 " Better tabbing
 vnoremap < <gv

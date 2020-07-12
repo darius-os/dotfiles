@@ -17,18 +17,18 @@ scrolling:
 
 font:
   normal:
-    family: "MesloLGS NF" # should be "Menlo" or something on macOS.
+    family: Fira Code Retina
     style: Regular
 
   bold:
-    family: "MesloLGS NF"
+    family: Fira Code Retina 
     style: Bold
 
   italic:
-    family: "MesloLGS NF"
+    family: Fira Code Retina
     style: Italic
 
-  size: 10
+  size: 8 
 
   offset:
     x: 1
@@ -38,33 +38,47 @@ font:
     x: 0
     y: 0
 
-# Colors (Dracula)
+# Colors (Nord)
 colors:
-  # Default colors
-  primary:
-    background: '#282a36'
-    foreground: '#f8f8f2'
+   # Default colors
+   primary:
+     background: '#2E3440'
+     foreground: '#D8DEE9'
 
-  normal:
-    black:   '#000000'
-    red:     '#ff5555'
-    green:   '#50fa7b'
-    yellow:  '#f1fa8c'
-    blue:    '#caa9fa'
-    magenta: '#ff79c6'
-    cyan:    '#8be9fd'
-    white:   '#bfbfbf'
+   # Normal colors
+   normal:
+     black:   '#3B4252'
+     red:     '#BF616A'
+     green:   '#A3BE8C'
+     yellow:  '#EBCB8B'
+     blue:    '#81A1C1'
+     magenta: '#B48EAD'
+     cyan:    '#88C0D0'
+     white:   '#E5E9F0'
 
-  bright:
-    black:   '#575b70'
-    red:     '#ff6e67'
-    green:   '#5af78e'
-    yellow:  '#f4f99d'
-    blue:    '#caa9fa'
-    magenta: '#ff92d0'
-    cyan:    '#9aedfe'
-    white:   '#e6e6e6'
+   # Bright colors
+   bright:
+     black:   '#4C566A'
+     red:     '#BF616A'
+     green:   '#A3BE8C'
+     yellow:  '#EBCB8B'
+     blue:    '#81A1C1'
+     magenta: '#B48EAD'
+     cyan:    '#8FBCBB'
+     white:   '#ECEFF4'
 
-background_opacity: 0.98
+background_opacity: 0.88
+
+dynamic_title: true
 
 unfocused_hollow: true
+
+mouse:
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+
+  url:
+    launcher:
+      program: xdg-open
+      args: []
+    modifiers: Control

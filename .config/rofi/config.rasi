@@ -8,7 +8,7 @@ configuration {
   combi-modi: "window,drun,run";
   hide-scrollbar: true;
   window-format: "{t}";
-  theme: "~/.config/rofi/themes/oxide.rasi";
+  theme: "~/.config/rofi/themes/flamingo.rasi";
   combi-hide-mode-prefix: false;
   display-window: "Win";
   display-windowcd: "Windows";
