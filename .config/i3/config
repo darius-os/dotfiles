@@ -3,7 +3,6 @@ set $term --no-startup-id $TERMINAL
 set $file --no-startup-id $FILE
 set $refresh_i3status killall -SIGUSR1 i3status
 
-#font xft:FiraCode-Retina 12
 font pango:monospace 8
 
 focus_follows_mouse no
