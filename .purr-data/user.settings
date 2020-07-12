@@ -6,7 +6,7 @@ noaudioout: False
 naudioout: 1
 audiooutdev1: 0 2
 audiobuf: 20
-rate: 48000
+rate: 44100
 callback: 0
 blocksize: 128
 midiapi: 1
