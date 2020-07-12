@@ -107,7 +107,6 @@ alias update='sudo pacman -Syu'
 alias devupdate='yay -Sua --devel'
 alias ping="prettyping --nolegend"
 alias intop='sudo intel_gpu_top'
-alias stock='watch -n 2 -t -c ticker.sh'
 
 # recent installed packages: packg 20/30 etc...
 alias packg="expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n"
