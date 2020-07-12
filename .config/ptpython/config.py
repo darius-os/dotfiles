@@ -11,12 +11,12 @@ __all__ = ("configure",)
 
 
 def configure(repl):
-    repl.show_signature = True
+    repl.show_signature = False
     repl.show_docstring = True
     repl.show_meta_enter_message = True
     repl.completion_visualisation = CompletionVisualisation.POP_UP
     repl.completion_menu_scroll_offset = 0
-    repl.show_line_numbers = False
+    repl.show_line_numbers = True
     repl.show_status_bar = False
     repl.show_sidebar_help = True
     repl.swap_light_and_dark = True
@@ -25,7 +25,7 @@ def configure(repl):
     repl.enable_mouse_support = False
     repl.complete_while_typing = True
     repl.enable_fuzzy_completion = True
-    repl.enable_dictionary_completion = False
+    repl.enable_dictionary_completion = True
     repl.vi_mode = True
     repl.paste_mode = True
     repl.prompt_style = "classic"
