@@ -19,6 +19,8 @@ plugins=(
     github
 )
 
+zshcache_time="$(date +%s%N)"
+
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
@@ -35,8 +37,6 @@ exit_zsh() {
   exit
 }
 
-zshcache_time="$(date +%s%N)"
-
 rehash_precmd() {
   if [[ -a /var/cache/zsh/pacman ]]; then
     local paccache_time="$(dare -r /var/cache/zsh/pacman +%s%N)"
@@ -47,20 +47,16 @@ rehash_precmd() {
   fi
 }
 
-
 add-zsh-hook -Uz precmd rehash_precmd
 
 zle -N exit_zsh
 bindkey '^D' exit_zsh
 zstyle ':completion:*' rehash true
 
-#--------------------------------------------#
-
 source /home/darius/.aliasrc
 source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-#source /home/darius/.config/broot/launcher/bash/br
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
