@@ -3,6 +3,7 @@ set $term --no-startup-id $TERMINAL
 set $file --no-startup-id $FILE
 set $refresh_i3status killall -SIGUSR1 i3status
 
+#font xft:FiraCode-Retina 12
 font pango:monospace 8
 
 focus_follows_mouse no
@@ -16,9 +17,10 @@ exec --no-startup-id ~/.fehbg
 exec --no-startup-id nm-applet
 exec --no-startup-id dropbox
 exec --no-startup-id unclutter -idle 1 -root
-#exec --no-startup-id caffeine
+#exec --no-startup-id "i3-msg -t subscribe '[ \"window\" ]' -m | while read -r line; do i3-msg '[class=jetbrains-idea] fullscreen enable'; done"
 exec --no-startup-id dunst
 exec --no-startup-id xcompmgr -C -n -f
+#exec --no-startup-id caffeine
 #exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 # exec_always --no-startup-id xset r rate 300 50
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
@@ -45,16 +47,17 @@ bindsym $mod+q kill
 bindsym $mod+Mod1+d exec --no-startup-id rofi -show drun
 
 bindsym $mod+f fullscreen toggle
-# bindsym $mod+s layout stacking
+#bindsym $mod+p layout stacking
 # bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+space floating toggle
 bindsym $mod+Shift+s sticky toggle
 bindsym $mod+Shift+space focus mode_toggle
 bindsym $mod+t bar hidden_state toggle
-# bindsym $mod+a focus parent
-#bindsym $mod+Shift+minus move scratchpad
-#bindsym $mod+minus scratchpad show
+#bindsym $mod+p focus parent
+
+bindsym $mod+o move to scratchpad
+bindsym $mod+p [class=.*] scratchpad show
 
 bindsym $mod+l split h
 bindsym $mod+k split v
@@ -78,11 +81,23 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
+set $FAKEFSWIDTH 1920
+set $FAKEFSHEIGHT 1080
+set $FAKEFSPOSX 0
+set $FAKEFSPOSY 0
+bindsym $mod+Shift+f fullscreen disable ; border none ; floating enable ; resize set $FAKEFSWIDTH $FAKEFSHEIGHT ; move absolute position $FAKEFSPOSX $FAKEFSPOSY
+set $FAKEFSWIDTH2 1280
+set $FAKEFSHEIGHT2 720
+set $FAKEFSPOSX2 100
+set $FAKEFSPOSY2 100
+bindsym $mod+Ctrl+f fullscreen disable ; border none ; floating enable ; resize set $FAKEFSWIDTH2 $FAKEFSHEIGHT2 ; move absolute position $FAKEFSPOSX2 $FAKEFSPOSY2
+
+
 for_window [title="~sgtk-"] border none, floating enable
 for_window [class="^.*"] border pixel 2
-for_window [class=Idea|Google-chrome-stable|Vscodium|Evince] focus
 for_window [class="^jetbrains-.+"][window_type=dialog] focus
-for_window [class="^idea+"][window_type=dialog] focus
+for_window [class="^jetbrains-.+" title="win.*"] border none
+for_window [instance="sun-awt-X11-XWindowPeer"] border pixel 0
 
 floating_minimum_size 500 x 500
 floating_maximum_size -1 x -1
@@ -136,8 +151,6 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
         bindsym j resize shrink width 10 px or 10 ppt
         bindsym k resize grow height 10 px or 10 ppt
         bindsym l resize shrink height 10 px or 10 ppt
@@ -148,7 +161,6 @@ mode "resize" {
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
@@ -156,15 +168,12 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Theme colors
-# class                   border  backgr. text    indic.   child_border
-  client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused_inactive #2F3D44 #2F3D44 #AD69AF #454948
-  client.unfocused        #2F3D44 #2F3D44 #AD69AF #454948
-  client.urgent           #CB4B16 #FDF6E3 #AD69AF #268BD2
-  client.placeholder      #000000 #0c0c0c #ffffff #000000
-
- client.background       #2B2C2B
+client.focused          #556064 #556064 #80FFF9 #FDF6E3
+client.focused_inactive #2F3D44 #2F3D44 #AD69AF #454948
+client.unfocused        #2F3D44 #2F3D44 #AD69AF #454948
+client.urgent           #CB4B16 #FDF6E3 #AD69AF #268BD2
+client.placeholder      #000000 #0c0c0c #ffffff #000000
+client.background       #2B2C2B
 
 
 set $mode_gaps Gaps: (o) outer, (i) inner

@@ -1,0 +1,18 @@
+{
+    "window.zoomLevel": 1,
+    "magic-racket.general.racketPath": "/usr/local/bin/racket",
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "workbench.colorTheme": "Nord",
+    "workbench.statusBar.visible": true,
+    "files.autoSave": "on",
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.quickSuggestionsDelay": 50,
+    "bashIde.explainshellEndpoint": "http://localhost:5000",
+    "editor.fontFamily": "'Fira Code Medium'",
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "terminal.integrated.fontSize": 10
+}
