@@ -1,209 +1,141 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(setq doom-localleader-key ",")
 (setq user-full-name "Darius"
       user-mail-address "do.kh@protonmail.com")
 
 (setq doom-font (font-spec :family "Fira Code Medium" :size 16)
       doom-big-font (font-spec :family "Fira Code Medium" :size 20)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
-      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
+      ;doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
+      +doom-dashboard-banner-file (expand-file-name "emacs.png" doom-private-dir)
+      +doom-dashboard-name "λ Home"
+      doom-fallback-buffer-name "► Doom" +doom-dashboard-name "► Doom"
+      doom-theme 'doom-tomorrow-night
+      doom-modeline-project-detection 'project
+      doom-modeline-buffer-file-name-style 'auto
+      doom-modeline-icon (display-graphic-p)
+      doom-modeline-major-mode-icon t
+      doom-modeline-major-mode-color-icon t
+      doom-modeline-buffer-state-icon t
+      doom-modeline-enable-word-count t
+      doom-modeline-buffer-encoding t
+      doom-modeline-persp-icon t
+      doom-modeline-number-limit 50)
 
 (setq-default explicit-shell-file-name "/usr/bin/sh")
+(setq global-prettify-symbols-mode t)
+(setq font-lock-maximum-decoration 3)
 
-(defun run-in-vterm-kill (process event)
-  "A process sentinel. Kills PROCESS's buffer if it is live."
-  (let ((b (process-buffer process)))
-    (and (buffer-live-p b)
-         (kill-buffer b))))
-
-(defun run-in-vterm (command)
-  "Execute string COMMAND in a new vterm."
-  (interactive
-   (list
-    (let* ((f (cond (buffer-file-name)
-                    ((eq major-mode 'dired-mode)
-                     (dired-get-filename nil t))))
-           (filename (concat " " (shell-quote-argument (and f (file-relative-name f))))))
-      (read-shell-command "Terminal command: "
-                          (cons filename 0)
-                          (cons 'shell-command-history 1)
-                          (list filename)))))
-  (with-current-buffer (vterm (concat "*" command "*"))
-    (set-process-sentinel vterm--process #'run-in-vterm-kill)
-    (vterm-send-string command)
-    (vterm-send-return)))
-
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-(let ((ansi-color-apply-face-function
-       (lambda (beg end face)
-         (when face
-           (put-text-property beg end 'face face)))))
-  (ansi-color-apply-on-region (point-min) (point-max)))
-
-(setq
- +doom-dashboard-banner-file (expand-file-name "emacs.png" doom-private-dir)
- doom-fallback-buffer-name "► Doom" +doom-dashboard-name "► Doom"
- doom-theme 'doom-spacegrey
- doom-modeline-project-detection 'project
- doom-modeline-buffer-file-name-style 'auto
- doom-modeline-icon (display-graphic-p)
- doom-modeline-major-mode-icon t
- doom-modeline-major-mode-color-icon t
- doom-modeline-buffer-state-icon t
- doom-modeline-enable-word-count t
- doom-modeline-buffer-encoding t
- doom-modeline-persp-icon t
- doom-modeline-number-limit 50)
-
-(setq rainbow-delimiters-max-face-count 9)
-
-(setq org-directory "~/org/"
-      display-line-numbers-type `relative
-      +ivy-buffer-preview t)
+(global-set-key (kbd "<M-f9>") 'resize-window)
+(global-set-key (kbd "<C-f9>") 'helpful-variable)
+(global-set-key (kbd "<C-f11>") 'geiser-repl-clear-buffer)
+(global-set-key (kbd "<M-f11>") 'list-flycheck-errors)
 
 (if (eq initial-window-system 'x)
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 
+(require 'resize-window)
+
+(setq company-idle-delay 0.4
+      company-minimum-prefix-length 2
+      company-tooltip-align-annotations t
+      company-show-numbers t
+      company-require-match nil)
+
+(setq python-shell-virtualenv-path "~/.local/share/python-venv/pymacs/")
+(setq +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info"))
+(setq +python-jupyter-repl-args '("--simple-prompt"))
+
+(after! lsp-python-ms
+  (set-lsp-priority! 'mspyls 1))
+
+(setq flycheck-popup-tip-error-prefix "❎")
+(setq flycheck-display-errors-delay 0.7)
+(setq flymake-no-changes-timeout nil)
+(setq flycheck-check-syntax-automatically '(save mode-enabled))
+
+
+;(require 'company-ghci)
+;(push 'company-ghci company-backends)
+;(add-hook 'haskell-mode-hook 'company-mode)
+;(add-hook 'haskell-mode-hook 'dante-mode)
+;(add-hook 'haskell-interactive-mode-hook 'company-mode)
+
+(defvar haskell-font-lock-symbols)
+(setq haskell-font-lock-symbols t)
+(setq haskell-mode-stylish-haskell-path "~/.local/bin/stylish-haskell")
+(setq haskell-doc-prettify-types t)
+
+(delete-selection-mode 1)
 (setq-default custom-file (expand-file-name ".custom.el" doom-private-dir))
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(setq-default history-length 1000)
-(setq-default prescient-history-length 1000)
 (after! evil (evil-escape-mode nil))
-
-(setq-default
- delete-by-moving-to-trash t
- tab-width 4
- window-combination-resize t
- x-stretch-cursor t)
+(setq-default delete-by-moving-to-trash t
+              tab-width 4
+              window-combination-resize t
+              x-stretch-cursor t
+              history-length 10000)
 
 (setq undo-limit 10000
       evil-want-fine-undo t
       auto-save-default t
       inhibit-compacting-font-caches t)
 
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i"
-      python-shell-virtualenv-root "/home/darius/.local/share/python-venv/pymacs/")
+(setq rainbow-delimiters-max-face-count 5
+      display-line-numbers-type `relative)
 
-(require 'resize-window)
-(global-set-key (kbd "<M-f9>") 'resize-window)
-(global-set-key (kbd "<M-=>") 'parinfer-mode)
+(setq +ivy-buffer-preview t)
 
-(setq company-idle-delay 1.2
-      company-tooltip-limit 15
-      company-async-wait 0.50)
+(setq org-directory "~/org/"
+      org-archive-location (concat "%s_archive_" (format-time-string "%Y" (current-time)) "::")
+      org-src-fontify-natively t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t
+      org-src-window-setup 'current-window)
 
-(setq font-lock-maximum-decoration 3)
 
-(require 'eval-sexp-fu)
-(defface eval-sexp-fu-flash
-  '((((class color)) (:background "slate blue"))
-    (t (:inverse-video t)))
-  :group 'eval-sexp-fu)
+(treemacs-resize-icons 18)
+(treemacs--set-width 25)
 
-(defface eval-sexp-fu-flash-error
-  '((((class color)) (:foreground "red" :bold t))
-    (t (:inverse-video t)))
-  :group 'eval-sexp-fu)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(let ((ansi-color-apply-face-function
+       (lambda (beg end face)
+         (when face
+           (put-text-property beg end 'face face)))))
+  (ansi-color-apply-on-region (point-min) (point-max)))
 
-(defcustom eval-sexp-fu-flash-face 'eval-sexp-fu-flash
-  "*Face to use for showing the sexps' overlay during the evaluation."
-  :type 'face
-  :group 'eval-sexp-fu)
-
-(defcustom eval-sexp-fu-flash-error-face 'eval-sexp-fu-flash-error
-  "*Face to use for showing the sexps' overlay if the evaluation signaled any error. The error highlighting is take into account only if non-nil value."
-  :type 'face
-  :group 'eval-sexp-fu)
-
-(defcustom eval-sexp-fu-flash-duration 0.15
-  "*For time duration, highlight the evaluating sexps."
-  :type 'number
-  :group 'eval-sexp-fu)
-
-(defcustom eval-sexp-fu-flash-error-duration 0.3
-  "*For time duration, highlight the evaluating sexps signaled errors."
-  :type 'number
-  :group 'eval-sexp-fu)
-
-(defcustom eval-sexp-fu-flash-function 'eval-sexp-fu-flash-default
-  "*Function to be used to create all of the actual flashing implementations."
-  :type '(choice (function-item eval-sexp-fu-flash-default)
-                 (function-item eval-sexp-fu-flash-paren-only))
-  :group 'eval-sexp-fu)
-
-(defcustom eval-sexp-fu-overlay-priority 0
-  "Priority of the overlays created by esf-hl-highlight-bounds."
-  :type 'integer :group 'eval-sexp-fu)
+(setq geiser-active-implementations '(chez)
+      geiser-chez-binary "chezscheme"
+      geiser-racket--prompt-regexp "<pkgs>.*> \\|\\(r6r\\|scheme\\|mzscheme\\|racket\\|gracket\\)@[^ ]*> ")
 
 (require 'eval-in-repl)
+(require 'racket-xp)
+(require 'racket-mode)
+(require 'eval-in-repl-ielm)
 (setq eir-repl-placement 'right
-      eir-jump-after-eval t)
+      eir-jump-after-eval t
+      eir-ielm-eval-in-current-buffer t)
 
 (require 'eval-in-repl-geiser)
+
+(define-key emacs-lisp-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
+(define-key lisp-interaction-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
+(define-key racket-mode-map (kbd "<M-R-r>") 'racket-run)
+(define-key racket-mode-map (kbd "<M-return>") 'racket-run)
+
 (add-hook 'geiser-mode-hook
           '(lambda ()
              (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser)))
 
-(setq geiser-active-implementations '(racket))
-(defun geiser-save ()
-  (interactive))
-;  (geiser-repl-write-input-ring))
-
-(require 'eval-in-repl-ielm)
-(setq eir-ielm-eval-in-current-buffer t)
-(define-key emacs-lisp-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
-(define-key lisp-interaction-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
-
-(require 'eval-in-repl-shell)
-(add-hook 'sh-mode-hook
-          '(lambda()
-             (local-set-key (kbd "M-<return>") 'eir-eval-in-shell)))
-
-(require 'eval-in-repl-cider)
-(define-key clojure-mode-map (kbd "<M-return>") 'eir-eval-in-cider)
-
-(defun eir-eval-in-shell2 ()
-  (interactive)
-  (let ((eir-jump-after-eval (not eir-jump-after-eval)))
-       (eir-eval-in-shell)))
-
-(add-hook 'sh-mode-hook
-          '(lambda()
-             (local-set-key (kbd "C-M-<return>") 'eir-eval-in-shell2)))
-
-(require 'racket-mode)
-;;(define-key racket-mode-map (kbd "<M-return>") 'racket-run)
-(define-key racket-mode-map (kbd "<M-return>") 'eir-eval-in-geiser)
-
-(require 'racket-xp)
-(add-hook 'racket-xp-mode-hook
-          (lambda ()
-            (remove-hook 'pre-redisplay-functions
+(add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
+(add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
+(add-hook 'racket-xp-mode-hook (lambda () (remove-hook 'pre-redisplay-functions))
                          #'racket-xp-pre-redisplay
-                         t)))
-
-(require 'visual-regexp)
-(define-key global-map (kbd "C-c r") 'vr/replace)
-(define-key global-map (kbd "C-c q") 'vr/query-replace)
-(define-key global-map (kbd "C-c m") 'vr/mc-mark)
-
-(use-package! info-colors
-  :commands (info-colors-fontify-node))
-
-(add-hook 'Info-selection-hook 'info-colors-fontify-node)
-(add-hook 'Info-mode-hook #'mixed-pitch-mode)
-(delete-selection-mode 1)
-
-(delete-selection-mode 1)
-(unless (equal "Battery status not available"
-               (battery))
-  (display-battery-mode 1))                 
-(global-subword-mode 1) 
+                         t)
 
 (custom-set-variables
  '(ansi-color-faces-vector
@@ -269,10 +201,95 @@
  '(vc-annotate-very-old-color nil))
 (custom-set-faces)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;(add-hook 'lisp-mode-hook
-;;      '(lambda ()
-;;         (local-set-key (kbd "<M-return>") 'eir-eval-in-sly))
+(add-to-list 'load-path "~/.config/doom/site-lisp/SuperCollider")
+(require 'w3m)
+(require 'sclang)
 
-;(setq evil-vsplit-window-right t))
-;(evil-split-window-below t)
+;;(require 'lsp)
+;;(require 'lsp-haskell)
+;;(add-hook haskell-mode-hook #'lsp)
+;;(add-hook haskell-mode-hook #'lsp-haskell-set-formatter-brittany)
+;;(setq haskell-process-path-cabal "~/.cabal/bin/cabal")
+;;(setq lsp-haskell-process-path-hie "~/.local/bin/ghcide")
+;;(setq lsp-haskell-process-args-hie '())
+;      org-clock-out-remove-zero-time-clocks t
+;      org-log-into-drawer t
+;      org-agenda-start-day "-1d"
+;      org-agenda-span 2
+;      org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)
+;      org-clock-in-switch-to-state "⚔ INPROCESS"
+;      org-download-timestamp "%Y%m%d_%H%M%S")
+;(global-pretty-mode t)
+;(pretty-deactivate-groups
+; '(:equality :ordering :ordering-double :ordering-triple
+;             :arrows :arrows-twoheaded ;;:punctuation
+;             :logic :sets)
+;
+;(pretty-activate-groups
+; '(:sub-and-superscripts :greek :arithmetic-nary :arithmetic-double :arithmetic-triple
+;   :equality :ordering :ordering-double :ordering-triple :parentheses
+;   :arrows :arrows-twoheaded :arrows-tails :arrows-tails-double :punctuation
+;   :logic :sets :subscripts :superscripts)
+;
+;(defun run-in-vterm (command)
+;  "Execute string COMMAND in a new vterm."
+;  (interactive
+;   (list
+;    (let* ((f (cond (buffer-file-name)
+;                    ((eq major-mode 'dired-mode)
+;                     (dired-get-filename nil t)
+;           (filename (concat " " (shell-quote-argument (and f (file-relative-name f)))))
+;      (read-shell-command "Terminal command: "
+;                          (cons filename 0)
+;                          (cons 'shell-command-history 1)
+;                          (list filename)
+;  (with-current-buffer (vterm (concat "*" command "*"))
+;    (set-process-sentinel vterm--process #'run-in-vterm-kill)
+;    (vterm-send-string command)
+;    (vterm-send-return))
+;    
+;(defun eir-eval-in-shell2 ()
+;  (interactive)
+;  (let ((eir-jump-after-eval (not eir-jump-after-eval)))
+;    (eir-eval-in-shell))
+
+;(add-hook 'sh-mode-hook
+;          '(lambda ()
+;             (local-set-key (kbd "C-M-<return>") 'eir-eval-in-shell2)))
+;
+;(require 'pretty-mode)
+;
+;(defun geiser-save ()
+;  (interactive))
+;
+;(add-hook 'sh-mode-hook
+;          '(lambda ()
+;             (local-set-key (kbd "M-<return>") 'eir-eval-in-shell)))
+;(require 'repl-toggle)
+;(require 'psci)
+;(add-to-list 'rtog/mode-repl-alist '(purescript-mode . psci))
+;(add-hook 'purescript-mode-hook 'inferior-psci-mode)
+;(require 'psc-ide)
+
+;(add-hook 'purescript-mode-hook
+;  (lambda ()
+;    (psc-ide-mode)
+;    (company-mode)
+;    (flycheck-mode)
+;    (turn-on-purescript-indentation))
+
+;(setq psc-ide-use-npm-bin t)
+
+;(after! centaur-tabs
+;  (centaur-tabs-mode -1)
+;  (setq centaur-tabs-height 24
+;        centaur-tabs-set-icons t
+;        centaur-tabs-modified-marker "×"
+;        centaur-tabs-close-button "×"
+;        centaur-tabs-set-bar 'above
+;        centaur-tabs-gray-out-icons 'buffer
+;
+;  (centaur-tabs-change-fonts "Fira Code Retina" 100))
+;(add-hook 'geiser-mode-hook
+;          '(lambda ()
+;             (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser)))

@@ -5,11 +5,15 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
+(when noninteractive
+  (after! undo-tree
+    (global-undo-tree-mode -1)))
+
 (doom! :input
        ;;chinese ;;japanese
 
        :completion
-       (company +tng) ;;+childframe)
+       (company +childframe)
        (ivy +icons)
        ;;+prescient)
        ;;helm ;;ido
@@ -23,14 +27,15 @@
        (popup +all +defaults)
        (pretty-code +fira)
        treemacs
-       unicode
+       (unicode +unicode-fonts)
        vc-gutter
        vi-tilde-fringe
        (window-select +numbers)
        workspaces
-       ;;nav-flash
-       ;;zen
-       ;;deft ;;doom-quit ;;fill-column ;;hydra ;;indent-guides ;;minimap  ;;neotree ;;tabs
+       nav-flash
+       zen
+       ;;(tabs +centaur-tabs)
+       ;;deft ;;doom-quit ;;fill-column ;;hydra ;;indent-guides ;;minimap  ;;neotree
 
        :editor
        (evil +everywhere)
@@ -38,10 +43,11 @@
        fold
        (format +onsave)
        parinfer
-       ;;snippets
+       word-wrap
+       snippets
        multiple-cursors
-       rotate-text
-       ;;lispy ;;god ;;objed ;;word-wrap
+       ;;rotate-text
+       ;;lispy ;;god ;;objed
 
        :emacs
        (dired +icons)
@@ -51,31 +57,34 @@
        vc
 
        :term
-       ;;eshell
+       eshell
        vterm
        ;;term
-       shell
+       ;;shell
 
 
        :checkers
        syntax
        grammar
-       ;;spell
+       spell
 
        :tools
        debugger
        (eval +overlay)
        lookup
        magit
-       pdf
        pass
-       ;;docker
+       lsp
+       pdf
+       tmux
+       make
+       docket
+       rgb
        ;;ansible
        ;;gist
-       ;;rgb
        ;;upload
-       ;;lsp ;;make ;;editorconfig
-       ;;taskrunner ;;terraform ;;tmux
+       ;;editorconfig
+       ;;taskrunner ;;terraform
 
        :lang
        emacs-lisp
@@ -84,30 +93,37 @@
        (org +dragndrop +pandoc) ;;+roam +dragndrop +present +pandoc
        sh
        yaml
-       scheme
        racket
-       (python
-        :editor format-all)
+       (python +cython +lsp :editor format-all)
+       (haskell +dante +attrap)
+       javascript
+       web
+       scheme
+       ;;elm
        ;;common-lisp
        ;;clojure
-       ;;javascript
-       ;;elm
-       ;;web
+       ;;latex
+       ;;julia
+       ;;sml
+       ;;fsharp
+       ;;rst
+       ;;rust
+       ;;scala
+       ;;idris
        ;;data
        ;;ess
-       ;;latex
-       ;;(haskell +lsp) ;;data ;;fsharp ;;gdscript ;;(go +lsp)) ;;sml ;; hy
-       ;;(java +meghanada) ;;julia ;;lua ;;nim ;;raku ;;rest ;;rst ;;rust ;;scala
+       ;;gdscript ;;(go +lsp)) ;; hy
+       ;;(java +meghanada) ;;lua ;;nim ;;raku ;;rest
 
        :email
-       ;;(mu4e +gmail)
+       (mu4e +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 
        :app
        calendar
        irc
-       ;;(rss +org)
+       (rss +org)
        ;;twitter
 
        :config
