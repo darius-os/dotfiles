@@ -25,18 +25,3 @@ set expandtab
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 au! BufWritePost $MYVIMRC source %
-
-"set cmdheight=2
-"set pumheight=10
-"set iskeyword+=-
-"set shortmess+=c
-"set laststatus=0
-"set nobackup
-"set nowritebackup
-"set updatetime=300
-"set conceallevel=0
-"set timeoutlen=100
-"set t_Co=256
-"set cursorline
-"set formatoptions-=ctro
-"set noshowmode

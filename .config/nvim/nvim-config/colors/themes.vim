@@ -19,7 +19,6 @@ let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_section_y = ''
-let g:webdevicons_enable_airline_tabline = 1
 
 "let g:airline_theme = 'nord'
 let g:nord_uniform_status_lines = 0
@@ -29,3 +28,4 @@ let g:nord_uniform_diff_background = 1
 let g:nord_italic = 1
 let g:nord_italic_comments = 1
 let g:nord_underline = 1
+
