@@ -24,4 +24,3 @@ set expandtab
 
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-au! BufWritePost $MYVIMRC source %

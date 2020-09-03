@@ -11,7 +11,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'ap/vim-css-color'   
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
 
 call plug#end()
 
