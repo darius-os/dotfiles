@@ -2,29 +2,27 @@
 
 (setq doom-localleader-key ",")
 (setq user-full-name "Darius"
-      user-mail-address "do.kh@protonmail.com")
+      user-mail-address "dory.khawand@gmai.com")
 
 (setq doom-font (font-spec :family "Fira Code Medium" :size 16)
-      doom-big-font (font-spec :family "Fira Code Medium" :size 20)
+      doom-big-font (font-spec :family "Fira Code Medium" :size 24)
       ;doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
-      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
+      ;doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
       +doom-dashboard-banner-file (expand-file-name "emacs.png" doom-private-dir)
-      +doom-dashboard-name "λ Home"
-      doom-fallback-buffer-name "► Doom" +doom-dashboard-name "► Doom"
-      doom-theme 'doom-tomorrow-night
-      doom-modeline-project-detection 'project
+      doom-fallback-buffer-name "► Doom" +doom-dashboard--last-cwd "► Doom"
+      doom-theme 'doom-spacegrey
+      doom-modeline-project-detection 'projectile
       doom-modeline-buffer-file-name-style 'auto
+      doom-modeline-buffer-encoding nil
       doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon t
       doom-modeline-major-mode-color-icon t
       doom-modeline-buffer-state-icon t
-      doom-modeline-enable-word-count t
-      doom-modeline-buffer-encoding t
-      doom-modeline-persp-icon t
-      doom-modeline-number-limit 50)
+      doom-modeline-enable-word-count nil
+      doom-modeline-persp-icon t)
+      ;doom-modeline-number-limit 50)
 
-(setq-default explicit-shell-file-name "/usr/bin/sh")
-(setq global-prettify-symbols-mode t)
+(setq read-process-output-max (* 1024 1024))
 (setq font-lock-maximum-decoration 3)
 
 (global-set-key (kbd "<M-f9>") 'resize-window)
@@ -32,55 +30,77 @@
 (global-set-key (kbd "<C-f11>") 'geiser-repl-clear-buffer)
 (global-set-key (kbd "<M-f11>") 'list-flycheck-errors)
 
+(require 'resize-window)
 (if (eq initial-window-system 'x)
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 
-(require 'resize-window)
+(setq projectile-globally-ignored-directories (append '("3.8"
+                                                        ".mypy_cache"
+                                                        ".git"
+                                                        ".cache"
+                                                        ".node_modules")))
 
-(setq company-idle-delay 0.4
+
+
+(setq company-idle-delay 0.1
       company-minimum-prefix-length 2
-      company-tooltip-align-annotations t
-      company-show-numbers t
-      company-require-match nil)
-
-(setq python-shell-virtualenv-path "~/.local/share/python-venv/pymacs/")
-(setq +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info"))
-(setq +python-jupyter-repl-args '("--simple-prompt"))
+      company-tooltip-minimum-width 10
+      company-box-doc-delay 3
+      company-tooltip-limit 10
+      company-box-frame-behavior 'point
+      company-box-max-candidates 5
+      company-box-backends-colors nil
+      company-box-tooltip-minimum-width 60)
 
 (after! lsp-python-ms
   (set-lsp-priority! 'mspyls 1))
 
-(setq flycheck-popup-tip-error-prefix "❎")
+(setq prettify-symbols-unprettify-at-point 'right-edge)
+
+;(setq flycheck-python-mypy-cache-dir "~/.cache/mypy"
+;      flycheck-python-mypy-executable "/usr/bin/mypy"
+;      flycheck-python-mypy-config "mypy.ini")
+
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (mapc (lambda (pair) (push pair prettify-symbols-alist))
+         '(
+           ("def"       .      ?ℱ)
+           ("=="        .      ?≡)
+           ("not in"    .      ?∉)
+           ("return"    .      ?⟼)
+           ("yield"     .      ?⟻)
+           ("not"       .      ?￢)
+           ("or"        .      ?∨)
+           ("and"       .      ?∧)
+           ("def"       .      ?ƒ)
+           ("->"        .      ?⟶)
+           (">>"        .      ?↠)
+           ("<<"        .      ?↞)
+           ("|="        .      ?⊨)
+           ("!="        .      ?≠)))))
+
 (setq flycheck-display-errors-delay 0.7)
-(setq flymake-no-changes-timeout nil)
 (setq flycheck-check-syntax-automatically '(save mode-enabled))
 
-
-;(require 'company-ghci)
-;(push 'company-ghci company-backends)
-;(add-hook 'haskell-mode-hook 'company-mode)
-;(add-hook 'haskell-mode-hook 'dante-mode)
-;(add-hook 'haskell-interactive-mode-hook 'company-mode)
-
-(defvar haskell-font-lock-symbols)
-(setq haskell-font-lock-symbols t)
-(setq haskell-mode-stylish-haskell-path "~/.local/bin/stylish-haskell")
-(setq haskell-doc-prettify-types t)
+(after! haskell-mode
+  (remove-hook! flycheck-mode #'flycheck-popup-tip-show-popup))
 
 (delete-selection-mode 1)
 (setq-default custom-file (expand-file-name ".custom.el" doom-private-dir))
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(after! evil (evil-escape-mode nil))
+;(after! evil (evil-escape-mode nil))
 (setq-default delete-by-moving-to-trash t
               tab-width 4
               window-combination-resize t
               x-stretch-cursor t
-              history-length 10000)
+              history-length 1000)
 
-(setq undo-limit 10000
+(setq undo-limit 1000
       evil-want-fine-undo t
       auto-save-default t
       inhibit-compacting-font-caches t)
@@ -92,50 +112,26 @@
 
 (setq org-directory "~/org/"
       org-archive-location (concat "%s_archive_" (format-time-string "%Y" (current-time)) "::")
-      org-src-fontify-natively t
       org-src-preserve-indentation t
       org-src-tab-acts-natively t
       org-src-window-setup 'current-window)
 
+(after! org (setq org-hide-emphasis-markers t
+                  org-hide-leading-stars t
+                  org-list-demote-modify-bullet '(("+" . "-") ("1." . "a.") ("-" . "+"))))
 
-(treemacs-resize-icons 18)
-(treemacs--set-width 25)
-
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(let ((ansi-color-apply-face-function
-       (lambda (beg end face)
-         (when face
-           (put-text-property beg end 'face face)))))
-  (ansi-color-apply-on-region (point-min) (point-max)))
-
-(setq geiser-active-implementations '(chez)
-      geiser-chez-binary "chezscheme"
-      geiser-racket--prompt-regexp "<pkgs>.*> \\|\\(r6r\\|scheme\\|mzscheme\\|racket\\|gracket\\)@[^ ]*> ")
+(add-hook 'org-mode-hook #'font-lock-debug-fontify t)
 
 (require 'eval-in-repl)
 (require 'racket-xp)
 (require 'racket-mode)
-(require 'eval-in-repl-ielm)
-(setq eir-repl-placement 'right
-      eir-jump-after-eval t
-      eir-ielm-eval-in-current-buffer t)
-
-(require 'eval-in-repl-geiser)
-
-(define-key emacs-lisp-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
-(define-key lisp-interaction-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
 (define-key racket-mode-map (kbd "<M-R-r>") 'racket-run)
 (define-key racket-mode-map (kbd "<M-return>") 'racket-run)
 
-(add-hook 'geiser-mode-hook
-          '(lambda ()
-             (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser)))
 
-(add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
-(add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
-(add-hook 'racket-xp-mode-hook (lambda () (remove-hook 'pre-redisplay-functions))
-                         #'racket-xp-pre-redisplay
-                         t)
+(unless (equal "Battery status not available"
+               (battery))
+  (display-battery-mode 1))
 
 (custom-set-variables
  '(ansi-color-faces-vector
@@ -201,95 +197,54 @@
  '(vc-annotate-very-old-color nil))
 (custom-set-faces)
 
-(add-to-list 'load-path "~/.config/doom/site-lisp/SuperCollider")
-(require 'w3m)
-(require 'sclang)
+;(add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
+;(add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
+;(add-hook 'racket-xp-mode-hook (lambda () (remove-hook 'pre-redisplay-functions))
+;                         #'racket-xp-pre-redisplay
+;                         t)
+;(require 'eval-in-repl-ielm)
+;(setq eir-repl-placement 'right
+;      eir-jump-after-eval t
+;      eir-ielm-eval-in-current-buffer t)
+;(define-key emacs-lisp-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
+;(define-key lisp-interaction-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
 
-;;(require 'lsp)
-;;(require 'lsp-haskell)
-;;(add-hook haskell-mode-hook #'lsp)
-;;(add-hook haskell-mode-hook #'lsp-haskell-set-formatter-brittany)
-;;(setq haskell-process-path-cabal "~/.cabal/bin/cabal")
-;;(setq lsp-haskell-process-path-hie "~/.local/bin/ghcide")
-;;(setq lsp-haskell-process-args-hie '())
-;      org-clock-out-remove-zero-time-clocks t
-;      org-log-into-drawer t
-;      org-agenda-start-day "-1d"
-;      org-agenda-span 2
-;      org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)
-;      org-clock-in-switch-to-state "⚔ INPROCESS"
-;      org-download-timestamp "%Y%m%d_%H%M%S")
-;(global-pretty-mode t)
-;(pretty-deactivate-groups
-; '(:equality :ordering :ordering-double :ordering-triple
-;             :arrows :arrows-twoheaded ;;:punctuation
-;             :logic :sets)
-;
-;(pretty-activate-groups
-; '(:sub-and-superscripts :greek :arithmetic-nary :arithmetic-double :arithmetic-triple
-;   :equality :ordering :ordering-double :ordering-triple :parentheses
-;   :arrows :arrows-twoheaded :arrows-tails :arrows-tails-double :punctuation
-;   :logic :sets :subscripts :superscripts)
-;
-;(defun run-in-vterm (command)
-;  "Execute string COMMAND in a new vterm."
-;  (interactive
-;   (list
-;    (let* ((f (cond (buffer-file-name)
-;                    ((eq major-mode 'dired-mode)
-;                     (dired-get-filename nil t)
-;           (filename (concat " " (shell-quote-argument (and f (file-relative-name f)))))
-;      (read-shell-command "Terminal command: "
-;                          (cons filename 0)
-;                          (cons 'shell-command-history 1)
-;                          (list filename)
-;  (with-current-buffer (vterm (concat "*" command "*"))
-;    (set-process-sentinel vterm--process #'run-in-vterm-kill)
-;    (vterm-send-string command)
-;    (vterm-send-return))
-;    
-;(defun eir-eval-in-shell2 ()
-;  (interactive)
-;  (let ((eir-jump-after-eval (not eir-jump-after-eval)))
-;    (eir-eval-in-shell))
-
-;(add-hook 'sh-mode-hook
+;(defvar haskell-font-lock-symbols)
+;(setq haskell-font-lock-symbols t)
+;(setq haskell-doc-prettify-types t)
+;(require 'eval-in-repl-geiser)
+;(add-hook 'geiser-mode-hook
 ;          '(lambda ()
-;             (local-set-key (kbd "C-M-<return>") 'eir-eval-in-shell2)))
+;             (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser))
+;(setq +ligatures-in-modes '(python-mode
+;                            haskell-mode
+;                            web-mode
+;                            javascript-mode
+;                            elisp-mode))
+;      +ligatures-extras-in-modes t)
+;(treemacs-resize-icons 18)
+;(treemacs--set-width 25)
+;(setq geiser-active-implementations '(chez)
+;      geiser-chez-binary "chezscheme"))
+;      geiser-racket--prompt-regexp "<pkgs>.*> \\|\\(r6r\\|scheme\\|mzscheme\\|racket\\|gracket\\)@[^ ]*> ")
+;(map! :after python
+;      :map python-mode-map
+;      :localleader
+;      (:desc "eval" :prefix "e"
+;       :desc "line or region" :n "e" #'jupyter-eval-line-or-region
+;        :desc "defun" :n "d" #'jupyter-eval-defun
+;       :desc "buffer" :n "b" #'jupyter-eval-buffer))
 ;
-;(require 'pretty-mode)
-;
-;(defun geiser-save ()
-;  (interactive))
-;
+;(unless (equal "Battery status not available"
+;               (battery))
+;  (display-battery-mode 1))            
+;(add-to-list 'load-path "~/.config/doom/site-lisp/SuperCollider")
+;(require 'w3m)
+;(require 'sclang)
 ;(add-hook 'sh-mode-hook
 ;          '(lambda ()
 ;             (local-set-key (kbd "M-<return>") 'eir-eval-in-shell)))
-;(require 'repl-toggle)
-;(require 'psci)
-;(add-to-list 'rtog/mode-repl-alist '(purescript-mode . psci))
-;(add-hook 'purescript-mode-hook 'inferior-psci-mode)
-;(require 'psc-ide)
-
-;(add-hook 'purescript-mode-hook
-;  (lambda ()
-;    (psc-ide-mode)
-;    (company-mode)
-;    (flycheck-mode)
-;    (turn-on-purescript-indentation))
-
-;(setq psc-ide-use-npm-bin t)
-
-;(after! centaur-tabs
-;  (centaur-tabs-mode -1)
-;  (setq centaur-tabs-height 24
-;        centaur-tabs-set-icons t
-;        centaur-tabs-modified-marker "×"
-;        centaur-tabs-close-button "×"
-;        centaur-tabs-set-bar 'above
-;        centaur-tabs-gray-out-icons 'buffer
-;
-;  (centaur-tabs-change-fonts "Fira Code Retina" 100))
-;(add-hook 'geiser-mode-hook
-;          '(lambda ()
-;             (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser)))
+;(after! evil-org
+;  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
+;                                                       (:pandoc t)
+;                                                       (:kernel . "python3")))
