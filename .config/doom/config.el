@@ -1,9 +1,10 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq doom-localleader-key ",")
+;; Identity
 (setq user-full-name "Darius"
-      user-mail-address "dory.khawand@gmai.com")
+      user-mail-address "dory.khawand@gmail.com")
 
+;; Doom
 (setq doom-font (font-spec :family "Fira Code Medium" :size 16)
       doom-big-font (font-spec :family "Fira Code Medium" :size 24)
       ;doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
@@ -11,6 +12,7 @@
       +doom-dashboard-banner-file (expand-file-name "emacs.png" doom-private-dir)
       doom-fallback-buffer-name "► Doom" +doom-dashboard--last-cwd "► Doom"
       doom-theme 'doom-spacegrey
+      doom-localleader-key ","
       doom-modeline-project-detection 'projectile
       doom-modeline-buffer-file-name-style 'auto
       doom-modeline-buffer-encoding nil
@@ -22,45 +24,53 @@
       doom-modeline-persp-icon t)
       ;doom-modeline-number-limit 50)
 
-(setq read-process-output-max (* 1024 1024))
-(setq font-lock-maximum-decoration 3)
+;; Defaults
+(setq read-process-output-max (* 1024 1024)
+      prettify-symbols-unprettify-at-point 'right-edge
+      undo-limit 1000
+      auto-save-default t
+      inhibit-compacting-font-caches t
+      rainbow-delimiters-max-face-count 5
+      display-line-numbers-type `relative
+      font-lock-maximum-decoration 3)
+
+(setq-default delete-by-moving-to-trash t
+              tab-width 4
+              custom-file (expand-file-name ".custom.el" doom-private-dir)
+              window-combination-resize t
+              x-stretch-cursor t
+              history-length 1000)
 
 (global-set-key (kbd "<M-f9>") 'resize-window)
 (global-set-key (kbd "<C-f9>") 'helpful-variable)
 (global-set-key (kbd "<C-f11>") 'geiser-repl-clear-buffer)
 (global-set-key (kbd "<M-f11>") 'list-flycheck-errors)
 
-(require 'resize-window)
-(if (eq initial-window-system 'x)
-    (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+;; Projectile
+(setq projectile-globally-ignored-directories
+      (append '("3.8"
+                ".mypy_cache"
+                ".git"
+                ".cache"
+                ".node_modules")))
 
-(setq projectile-globally-ignored-directories (append '("3.8"
-                                                        ".mypy_cache"
-                                                        ".git"
-                                                        ".cache"
-                                                        ".node_modules")))
-
-
-
+;; Autocomplete - Error Check
 (setq company-idle-delay 0.1
       company-minimum-prefix-length 2
       company-tooltip-minimum-width 10
-      company-box-doc-delay 3
+      company-box-doc-delay 1.8
       company-tooltip-limit 10
       company-box-frame-behavior 'point
       company-box-max-candidates 5
       company-box-backends-colors nil
       company-box-tooltip-minimum-width 60)
 
+(setq flycheck-display-errors-delay 0.7
+      flycheck-check-syntax-automatically '(save mode-enabled))
+
+;; Python
 (after! lsp-python-ms
   (set-lsp-priority! 'mspyls 1))
-
-(setq prettify-symbols-unprettify-at-point 'right-edge)
-
-;(setq flycheck-python-mypy-cache-dir "~/.cache/mypy"
-;      flycheck-python-mypy-executable "/usr/bin/mypy"
-;      flycheck-python-mypy-config "mypy.ini")
 
 (add-hook
  'python-mode-hook
@@ -82,35 +92,8 @@
            ("|="        .      ?⊨)
            ("!="        .      ?≠)))))
 
-(setq flycheck-display-errors-delay 0.7)
-(setq flycheck-check-syntax-automatically '(save mode-enabled))
-
-(after! haskell-mode
-  (remove-hook! flycheck-mode #'flycheck-popup-tip-show-popup))
-
-(delete-selection-mode 1)
-(setq-default custom-file (expand-file-name ".custom.el" doom-private-dir))
-(when (file-exists-p custom-file)
-  (load custom-file))
-
-;(after! evil (evil-escape-mode nil))
-(setq-default delete-by-moving-to-trash t
-              tab-width 4
-              window-combination-resize t
-              x-stretch-cursor t
-              history-length 1000)
-
-(setq undo-limit 1000
-      evil-want-fine-undo t
-      auto-save-default t
-      inhibit-compacting-font-caches t)
-
-(setq rainbow-delimiters-max-face-count 5
-      display-line-numbers-type `relative)
-
-(setq +ivy-buffer-preview t)
-
-(setq org-directory "~/org/"
+;; Org
+(setq org-directory "~/Dropbox/code/Org/"
       org-archive-location (concat "%s_archive_" (format-time-string "%Y" (current-time)) "::")
       org-src-preserve-indentation t
       org-src-tab-acts-natively t
@@ -120,18 +103,35 @@
                   org-hide-leading-stars t
                   org-list-demote-modify-bullet '(("+" . "-") ("1." . "a.") ("-" . "+"))))
 
+;; .org files highlight bug
 (add-hook 'org-mode-hook #'font-lock-debug-fontify t)
 
-(require 'eval-in-repl)
+
+;; Racket
 (require 'racket-xp)
 (require 'racket-mode)
 (define-key racket-mode-map (kbd "<M-R-r>") 'racket-run)
 (define-key racket-mode-map (kbd "<M-return>") 'racket-run)
 
-
+;; Other
 (unless (equal "Battery status not available"
                (battery))
   (display-battery-mode 1))
+
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+(setq evil-want-fine-undo t)
+
+(setq +ivy-buffer-preview t)
+
+
+(if (eq initial-window-system 'x)
+    (toggle-frame-maximized)
+  (toggle-frame-fullscreen))
+
+(delete-selection-mode 1)
+(require 'resize-window)
 
 (custom-set-variables
  '(ansi-color-faces-vector
@@ -196,55 +196,3 @@
     (cons 360 "#5B6268")))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces)
-
-;(add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
-;(add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
-;(add-hook 'racket-xp-mode-hook (lambda () (remove-hook 'pre-redisplay-functions))
-;                         #'racket-xp-pre-redisplay
-;                         t)
-;(require 'eval-in-repl-ielm)
-;(setq eir-repl-placement 'right
-;      eir-jump-after-eval t
-;      eir-ielm-eval-in-current-buffer t)
-;(define-key emacs-lisp-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
-;(define-key lisp-interaction-mode-map (kbd "<M-return>") 'eir-eval-in-ielm)
-
-;(defvar haskell-font-lock-symbols)
-;(setq haskell-font-lock-symbols t)
-;(setq haskell-doc-prettify-types t)
-;(require 'eval-in-repl-geiser)
-;(add-hook 'geiser-mode-hook
-;          '(lambda ()
-;             (local-set-key (kbd "<M-return>") 'eir-eval-in-geiser))
-;(setq +ligatures-in-modes '(python-mode
-;                            haskell-mode
-;                            web-mode
-;                            javascript-mode
-;                            elisp-mode))
-;      +ligatures-extras-in-modes t)
-;(treemacs-resize-icons 18)
-;(treemacs--set-width 25)
-;(setq geiser-active-implementations '(chez)
-;      geiser-chez-binary "chezscheme"))
-;      geiser-racket--prompt-regexp "<pkgs>.*> \\|\\(r6r\\|scheme\\|mzscheme\\|racket\\|gracket\\)@[^ ]*> ")
-;(map! :after python
-;      :map python-mode-map
-;      :localleader
-;      (:desc "eval" :prefix "e"
-;       :desc "line or region" :n "e" #'jupyter-eval-line-or-region
-;        :desc "defun" :n "d" #'jupyter-eval-defun
-;       :desc "buffer" :n "b" #'jupyter-eval-buffer))
-;
-;(unless (equal "Battery status not available"
-;               (battery))
-;  (display-battery-mode 1))            
-;(add-to-list 'load-path "~/.config/doom/site-lisp/SuperCollider")
-;(require 'w3m)
-;(require 'sclang)
-;(add-hook 'sh-mode-hook
-;          '(lambda ()
-;             (local-set-key (kbd "M-<return>") 'eir-eval-in-shell)))
-;(after! evil-org
-;  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-;                                                       (:pandoc t)
-;                                                       (:kernel . "python3")))

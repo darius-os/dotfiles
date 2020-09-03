@@ -1,9 +1,9 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-(package! eval-in-repl)
 (package! resize-window)
 
+;(package! eval-in-repl)
 ;(package! ein)
 ;(package! sed-mode)
 ;(package! w3m)
