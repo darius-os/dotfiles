@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
 
 alias \
-        pva="source ~/.local/share/main-venv/bin/activate" \
-        pvm="source ~/.local/share/idea/microblog/bin/activate" \
-        cm="cd ~/code/python/microblog" \
+        emf="emacs -nw" \
+        emc="emacs -nw ." \
         el="exa -lh -F --icons" \
         exl="exa -lha -F --icons" \
         exla="exa -abghHliS -F --icons" \
@@ -41,22 +40,12 @@ alias \
         vizsh="vi ~/.zshrc" \
         vi3="vi ~/.config/i3/config" \
         vinvim="vi ~/.config/nvim/nvim-config/plugins.vim" \
-        vifm='./.local/bin/vifmrun'
 
 alias \
-        pvpnr="sudo protonvpn r" \
-        pvpns="sudo protonvpn s" \
-        pvpnc="sudo protonvpn c" \
-        pvpnf="sudo protonvpn c -f" \
-        pvpnt="sudo protonvpn c --tor" \
-        pvpnsc="sudo protonvpn c --sc" \
-        pvpnd="sudo protonvpn d" 
+        vpncs="expressvpn connect smart" \
 
 alias \
         failed="systemctl --failed" \
         journal="sudo journalctl -p 3 -xb" \
         du="ncdu --color dark -rr -x --exclude .git"
 
-alias \
-        sxiv="devour sxiv" \
-        leafpad="devour leafpad"

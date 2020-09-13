@@ -9,6 +9,12 @@ export UPDATE_ZSH_DAYS=1
 export STACK_INSTALL_PATH="$HOME/.local/bin"
 export DOOMDIR="$XDG_CONFIG_HOME/doom"
 
+export WORKON_HOME="$HOME/code/python/pymacs/.venv/bin"
+export MYPY_CACHE_DIR="$HOME/.cache/mypy"
+export MYPY_CONFIG_FILE="$HOME/.config/mypy/config"
+export PIPENV_VERBOSITY=-1
+# export PYLINTRC="$HOME/code/python/pymacs/pymacs/.pylintrc"
+
 export FBFONT=/usr/share/kbd/consolefonts/ter-216n.psf.gz
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -18,7 +24,7 @@ export TERMINAL="alacritty"
 export BROWSER="google-chrome-stable"
 export READER="zathura"
 export FILE="nemo"
-export PAGER="nvimpager -p"
+# export PAGER="nvimpager -p"
 export ARCHFLAGS="-arch x86_64"
 #export _JAVA_AWT_WM_NONREPARENTING=1
 export RUBYOPT='-W:no-deprecated -W:no-experimental'
@@ -35,3 +41,5 @@ export FZF_ALT_C_COMMAND='rg --hidden --files --null --sort path 2>/dev/null | x
 export XDG_CURRENT_DESKTOP=i3
 ##export XDG_SESSION_DESKTOP=i3
 export TEMP_HOME_DIR="$HOME/temp/"
+
+export PATH="$HOME/.poetry/bin:$PATH"

@@ -5,30 +5,43 @@
       user-mail-address "dory.khawand@gmail.com")
 
 ;; Doom
-(setq doom-font (font-spec :family "Fira Code Medium" :size 16)
-      doom-big-font (font-spec :family "Fira Code Medium" :size 24)
-      ;doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
-      ;doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
+(setq doom-font (font-spec :family "Iosevka Extended" :size 18 :weight 'medium)
+      doom-big-font (font-spec :family "Iosevka Extended" :size 24 :weight 'medium)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 18)
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
       +doom-dashboard-banner-file (expand-file-name "emacs.png" doom-private-dir)
       doom-fallback-buffer-name "► Doom" +doom-dashboard--last-cwd "► Doom"
-      doom-theme 'doom-spacegrey
+      doom-theme 'doom-city-lights
       doom-localleader-key ","
       doom-modeline-project-detection 'projectile
       doom-modeline-buffer-file-name-style 'auto
       doom-modeline-buffer-encoding nil
       doom-modeline-icon (display-graphic-p)
       doom-modeline-major-mode-icon t
+      doom-modeline-buffer-file-name-style 'truncate-with-project
       doom-modeline-major-mode-color-icon t
+      doom-modeline-env-enable-python nil
       doom-modeline-buffer-state-icon t
       doom-modeline-enable-word-count nil
-      doom-modeline-persp-icon t)
-      ;doom-modeline-number-limit 50)
+      doom-modeline-persp-icon nil
+      doom-themes-treemacs-theme "doom-colors"
+      doom-modeline-number-limit 50)
+
+
+(defun doom-modeline-conditional-buffer-encoding ()
+  (setq-local doom-modeline-buffer-encoding
+              (unless (or (eq buffer-file-coding-system 'utf-8-unix)
+                          (eq buffer-file-coding-system 'utf-8)))))
+
+(add-hook 'after-change-major-mode-hook #'doom-modeline-conditional-buffer-encoding)
+
 
 ;; Defaults
-(setq read-process-output-max (* 1024 1024)
+(setq read-process-output-max (* 1024 1024 10)
       prettify-symbols-unprettify-at-point 'right-edge
-      undo-limit 1000
+      undo-limit 100000
       auto-save-default t
+      auto-save-interval 25
       inhibit-compacting-font-caches t
       rainbow-delimiters-max-face-count 5
       display-line-numbers-type `relative
@@ -36,15 +49,39 @@
 
 (setq-default delete-by-moving-to-trash t
               tab-width 4
+              prescient-history-length 1000
               custom-file (expand-file-name ".custom.el" doom-private-dir)
               window-combination-resize t
               x-stretch-cursor t
-              history-length 1000)
+              history-length 10000)
+
+(after! treemacs
+  (setq treemacs--git-cache-max-size 512
+        treemacs--icon-size 24
+        treemacs-width 28))
 
 (global-set-key (kbd "<M-f9>") 'resize-window)
-(global-set-key (kbd "<C-f9>") 'helpful-variable)
-(global-set-key (kbd "<C-f11>") 'geiser-repl-clear-buffer)
 (global-set-key (kbd "<M-f11>") 'list-flycheck-errors)
+(global-set-key (kbd "<M-f8>") 'doom/set-frame-opacity)
+(global-set-key (kbd "<M-f7>") 'lsp-ui-imenu)
+(global-set-key (kbd "<M-f2>") 'regexp-builder)
+(global-set-key (kbd "<M-f1>") 'counsel-dash-at-point)
+(global-set-key (kbd "<C-f9>") 'helpful-variable)
+(global-set-key (kbd "<C-f8>") 'counsel-dash)
+(global-set-key (kbd "<C-f7>") 'poetry-venv-toggle)
+(global-set-key (kbd "<C-f6>") 'hl-line-mode)
+(global-set-key (kbd "M-[") 'hide-mode-line-mode)
+(global-set-key (kbd "M-]") 'display-line-numbers-mode)
+(global-set-key [remap query-replace] 'anzu-query-replace-regexp)
+
+
+;; (defun test ()
+;;     ;; "Turn centered-cursor-mode on."
+;;   (prettify-symbols-mode -1)
+;;   (hl-line-mode -1)
+;;   (display-line-numbers-mode -1)
+;;   (pipenv-mode -1))
+
 
 ;; Projectile
 (setq projectile-globally-ignored-directories
@@ -54,77 +91,103 @@
                 ".cache"
                 ".node_modules")))
 
-;; Autocomplete - Error Check
-(setq company-idle-delay 0.1
-      company-minimum-prefix-length 2
-      company-tooltip-minimum-width 10
-      company-box-doc-delay 1.8
-      company-tooltip-limit 10
-      company-box-frame-behavior 'point
-      company-box-max-candidates 5
-      company-box-backends-colors nil
-      company-box-tooltip-minimum-width 60)
+;; Autocompletion - Error Check
+(after! company
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 2
+        company-tooltip-minimum-width 10
+        ;company-box-doc-delay 1.4
+        company-box-doc-enable nil
+        company-box-backends-colors nil
+        company-box-tooltip-minimum-width 60
+        company-box-frame-behavior 'point
+        company-tooltip-limit 10))
 
-(setq flycheck-display-errors-delay 0.7
-      flycheck-check-syntax-automatically '(save mode-enabled))
+(after! flycheck
+  (setq flycheck-display-errors-delay 1
+        flycheck-check-syntax-automatically '(mode-enabled save)
+        flycheck-python-mypy-cache-dir (concat
+                                        (getenv "MYPY_CACHE_DIR"))
+        flycheck-python-mypy-config (concat
+                                     (getenv "MYPY_CONFIG_FILE"))
+        flycheck-python-mypy-executable "mypy")
+  (setq-default flycheck-disabled-checkers '(python-pylint)))
+
+(setq-default flycheck-display-errors-function 'flycheck-display-errors-function)
+
+(setq evil-want-fine-undo t)
+(setq +ivy-buffer-preview t
+      ivy-posframe-min-width 140)
+
+;(add-hook 'evil-normal-state-entry-hook #'company-abort)
 
 ;; Python
 (after! lsp-python-ms
   (set-lsp-priority! 'mspyls 1))
 
-(add-hook
- 'python-mode-hook
- (lambda ()
-   (mapc (lambda (pair) (push pair prettify-symbols-alist))
-         '(
-           ("def"       .      ?ℱ)
-           ("=="        .      ?≡)
-           ("not in"    .      ?∉)
-           ("return"    .      ?⟼)
-           ("yield"     .      ?⟻)
-           ("not"       .      ?￢)
-           ("or"        .      ?∨)
-           ("and"       .      ?∧)
-           ("def"       .      ?ƒ)
-           ("->"        .      ?⟶)
-           (">>"        .      ?↠)
-           ("<<"        .      ?↞)
-           ("|="        .      ?⊨)
-           ("!="        .      ?≠)))))
+(after! lsp-mode
+  (setq lsp-ui-doc-delay 1
+
+        lsp-ui-doc-max-height 30
+        lsp-ui-sideline-enable nil))
+
+(after! python-mode
+  (setq pipenv-mode -1))
+
+(setq python-shell-completion-native-enable nil)
+
+(map! :map python-mode-map
+      "C-c C-t" #'lsp-ui-doc-show
+      "C-c T"   #'lsp-describe-thing-at-point
+      "C-c H"   #'lsp-ui-doc-mode
+      "M-p"     #'lsp-ui-flycheck-list)
 
 ;; Org
-(setq org-directory "~/Dropbox/code/Org/"
-      org-archive-location (concat "%s_archive_" (format-time-string "%Y" (current-time)) "::")
-      org-src-preserve-indentation t
-      org-src-tab-acts-natively t
-      org-src-window-setup 'current-window)
+(setq org-directory "~/Dropbox/code/Org")
 
-(after! org (setq org-hide-emphasis-markers t
-                  org-hide-leading-stars t
-                  org-list-demote-modify-bullet '(("+" . "-") ("1." . "a.") ("-" . "+"))))
+(after! org-mode
+  (setq org-hide-emphasis-markers t
+        org-hide-leading-stars t
+        org-archive-location (concat "%s_archive_" (format-time-string "%Y" (current-time)) "::")
+        org-src-preserve-indentation t
+        org-log-done 'time
+        org-src-tab-acts-natively t
+        org-catch-invisible-edits t
+        org-src-window-setup 'current-window
+        org-list-demote-modify-bullet '(("+" . "-")
+                                        ("1." . "a.")
+                                        ("-" . "+"))))
 
-;; .org files highlight bug
-(add-hook 'org-mode-hook #'font-lock-debug-fontify t)
+(add-hook 'org-mode-hook #'hl-todo-mode)
+(add-hook 'org-mode-hook #'org-superstar-mode)
+(add-hook 'org-mode-hook #'font-lock-debug-fontify)
 
+(map! :map evil-org-mode-map
+      :after evil-org
+      :n "g <up>" #'org-backward-heading-same-level
+      :n "g <down>" #'org-forward-heading-same-level
+      :n "g <left>" #'org-up-element
+      :n "g <right>" #'org-down-element)
 
-;; Racket
-(require 'racket-xp)
-(require 'racket-mode)
-(define-key racket-mode-map (kbd "<M-R-r>") 'racket-run)
-(define-key racket-mode-map (kbd "<M-return>") 'racket-run)
+(after! org-superstar
+  (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+        org-superstar-prettify-item-bullets t))
+
+; NOTE: in case of update error for org-roam and org-supertar:
+; cd ~/.config/emacs/.local/straight/repos/melpa
+; git pull
+; rm -f ~/.config/emacs/.local/straight/build-cache.el
+; doom sync
+
 
 ;; Other
 (unless (equal "Battery status not available"
                (battery))
   (display-battery-mode 1))
 
+
 (when (file-exists-p custom-file)
   (load custom-file))
-
-(setq evil-want-fine-undo t)
-
-(setq +ivy-buffer-preview t)
-
 
 (if (eq initial-window-system 'x)
     (toggle-frame-maximized)

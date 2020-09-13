@@ -1,28 +1,34 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
+
+(setq locale-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8-unix)
+(set-terminal-coding-system 'utf-8)
+
 
 (doom! :input
 
        :completion
        (company +childframe)
-       (ivy +icons)
+       (ivy +icons +prescient +childframe +fuzzy)
 
        :ui
        doom
-       doom-dashboard
+       ;doom-dashboard
        hl-todo
        modeline
        ophints
        (popup +all +defaults)
        (unicode +unicode-fonts)
-       (ligatures +fira)
+       (ligatures +iosevka)
        vc-gutter
-       vi-tilde-fringe
+       hydra
+       treemacs
+       ;vi-tilde-fringe
        (window-select +numbers)
        workspaces
        nav-flash
+       zen
 
        :editor
        (evil +everywhere)
@@ -43,38 +49,55 @@
 
        :term
        vterm
+       ;shell
+       ;term
        eshell
 
        :checkers
-       syntax
+       (syntax +childframe)
        grammar
+       ;spell
 
        :tools
        (debugger +lsp)
        (eval +overlay)
-       lookup
+       (lookup +docsets)
+       (pass +auth)
        magit
+       ;ein
+       pdf
+       (docker +lsp)
+       rgb
+       upload
        pass
-       lsp
+       (lsp +peek)
        ;editorconfig
+
+       :os
+       (tty +osc)
 
        :lang
        emacs-lisp
-       json
-       markdown
-       org
-       sh
-       yaml
-       racket
+       (json +lsp)
+       (markdown +grip)
+       (org +gnuplot +brain +pretty +journal +babel)
+       (sh +lsp)
+       (yaml +lsp)
        (python +lsp +poetry)
-       (haskell +dante)
        (javascript +lsp)
        (web +lsp)
+       ;(haskell +dante)
+       ;;racket
+       ;;(scala +lsp)
+       ;;(cc +lsp)
 
        :email
 
        :app
+       calendar
+       (rss +org)
        irc
+       twitter
 
        :config
        (default +bindings +smartparens))
