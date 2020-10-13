@@ -4,9 +4,7 @@ path=( "/usr/bin" \
        "/usr/local/bin" \
        "$HOME/.local/bin" \
        "$HOME/bin" \
-       "$HOME/.cargo/bin" \
-       "$HOME/.ghcup/bin" \
-       "$HOME/racket/bin" \
+       "$HOME/kafka_2.12-2.6.0/bin" \
        "$HOME/.config/emacs/bin" \
        "$HOME/.config/npm-global/bin" \
        "$HOME/.poetry/bin" \
