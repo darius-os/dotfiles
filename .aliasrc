@@ -26,15 +26,15 @@ alias \
         devupdate='yay -Sua --devel' \
         ping="prettyping --nolegend" \
         intop='sudo intel_gpu_top' \
-        stock='watch -n 2 -t -c ticker.sh'
-
+        tx='tar -xvf' \
+        
 alias \
         packg="expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n" \
         pacdv="pacman -Qq | grep -Ee '-(bzr|cvs|darcs|git|hg|svn)$'" \
         pkgfiles=" | grep -v '/$' | xargs du -h | sort -h'" \
         rflctr="sudo reflector --latest 75 --protocol http --sort rate --save /etc/pacman.d/mirrorlist" \
         yayqueryaur="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S" \
-        yayquerydb="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S"
+        yayquerydb="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S" \
 
 alias \
         vizsh="vi ~/.zshrc" \
