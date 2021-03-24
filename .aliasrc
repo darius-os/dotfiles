@@ -26,7 +26,8 @@ alias \
         devupdate='yay -Sua --devel' \
         ping="prettyping --nolegend" \
         intop='sudo intel_gpu_top' \
-        stock='watch -n 2 -t -c ticker.sh'
+        stock='watch -n 2 -t -c ticker.sh' \
+        pubip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 alias \
         packg="expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n" \
