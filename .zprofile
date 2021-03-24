@@ -6,14 +6,16 @@ export ZSH=$HOME/.oh-my-zsh
 export ZSH_CACHE_DIR=$HOME/.cache
 export UPDATE_ZSH_DAYS=1
 
-export JAVA_HOME=$(readlink -f /home/darius/.jdks/corretto-1.8.0_282/bin/java | sed "s:bin/java::")
+export JAVA15_HOME="$HOME/.jdks/openjdk-15/bin"
 
 export STACK_INSTALL_PATH="$HOME/.local/bin"
+export DOOMDIR="$XDG_CONFIG_HOME/doom"
 
 export WORKON_HOME="$HOME/code/python/pymacs/.venv/bin"
 export MYPY_CACHE_DIR="$HOME/.cache/mypy"
 export MYPY_CONFIG_FILE="$HOME/.config/mypy/config"
 export PIPENV_VERBOSITY=-1
+# export PYLINTRC="$HOME/code/python/pymacs/pymacs/.pylintrc"
 
 export FBFONT=/usr/share/kbd/consolefonts/ter-216n.psf.gz
 export LANG=en_US.UTF-8
@@ -22,8 +24,8 @@ export LC_CTYPE=en_US.UTF-8
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="google-chrome-stable"
-export READER="zathura"
-export FILE="nemo"
+export READER="evince"
+export FILE="nautilus"
 # export PAGER="nvimpager -p"
 export ARCHFLAGS="-arch x86_64"
 #export _JAVA_AWT_WM_NONREPARENTING=1
