@@ -7,4 +7,4 @@ ints = set()
 while (stdin := input()) != "end":
     ints.add(stdin)
 
-pyperclip.copy(', '.join(["'{}'".format(i) for i in ints]))
+pyperclip.copy(', '.join(["{}".format(i) for i in ints]))
