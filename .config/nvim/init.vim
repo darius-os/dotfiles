@@ -6,15 +6,10 @@ endif
 
 call plug#begin(expand('~/.config/nvim/plugged'))
 
-
-
 Plug 'vim-airline/vim-airline'                          " airline status bar
 Plug 'ryanoasis/vim-devicons'                           " pretty icons everywhere
 Plug 'luochen1990/rainbow'                              " rainbow parenthesis
-Plug 'hzchirs/vim-material'                             " material color themes
 Plug 'gregsexton/MatchTag'                              " highlight matching html tags
-
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP and more
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf itself
 Plug 'junegunn/fzf.vim'                                 " fuzzy search integration
@@ -33,12 +28,12 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'machakann/vim-sandwich'                           " make sandwiches
 Plug 'christoomey/vim-tmux-navigator'                   " seamless vim and tmux navigation
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-
 Plug 'wakatime/vim-wakatime'
+
 call plug#end()
 
 
-set termguicolors                                       " Opaque Background
+"set termguicolors                                       " Opaque Background
 set mouse=a                                             " enable mouse scrolling
 set clipboard+=unnamedplus                              " use system clipboard by default
 set tabstop=4 softtabstop=4 shiftwidth=4 autoindent     " tab width
@@ -83,8 +78,8 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
-let g:material_style = 'oceanic'
-colorscheme vim-material
+"let g:material_style = 'oceanic'
+"colorscheme vim-material
 hi Pmenu guibg='#00010a' guifg=white                    " popup menu colors
 hi Comment gui=italic cterm=italic                      " italic comments
 hi Search guibg=#b16286 guifg=#ebdbb2 gui=NONE          " search string highlight color
@@ -102,8 +97,6 @@ hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
 let loaded_netrw = 0                                    " diable netew
 let g:omni_sql_no_default_maps = 1                      " disable sql omni completion
 let g:loaded_python_provider = 0
-let g:loaded_perl_provider = 0
-let g:loaded_ruby_provider = 0
 let g:python3_host_prog = expand('/usr/bin/python3')
 
 " Airline
@@ -135,20 +128,16 @@ let g:coc_global_extensions = [
             \'coc-actions',
             \'coc-css',
             \'coc-html',
-            \'coc-tsserver',
             \'coc-yaml',
             \'coc-lists',
-            \'coc-java',
             \'coc-snippets',
             \'coc-python',
-            \'coc-clangd',
             \'coc-prettier',
             \'coc-xml',
             \'coc-syntax',
             \'coc-git',
             \'coc-marketplace',
             \'coc-highlight',
-            \'coc-flutter',
             \]
 
 let g:indentLine_char_list = ['▏', '¦', '┆', '┊']
@@ -209,15 +198,12 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 augroup noargs
     autocmd BufDelete * if empty(filter(tabpagebuflist(), '!buflisted(v:val)')) | Startify | endif
-
     autocmd VimEnter * if argc() == 0 | Startify | endif
 augroup END
 
 augroup folderarg
     autocmd VimEnter * if argc() != 0 && isdirectory(argv()[0]) | execute 'cd' fnameescape(argv()[0])  | endif
-
     autocmd VimEnter * if argc() != 0 && isdirectory(argv()[0]) | Startify  | endif
-
     autocmd VimEnter * if argc() != 0 && isdirectory(argv()[0]) | execute 'Files ' fnameescape(argv()[0]) | endif
 augroup END
 
@@ -229,12 +215,9 @@ autocmd BufReadPost *
 autocmd FileType python nnoremap <leader>rn :Semshi rename <CR>
 
 command! -nargs=0 Format :call CocAction('format')
-
 command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--inline-info']}), <bang>0)
-
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
 
 function! RipgrepFzf(query, fullscreen)
@@ -295,9 +278,7 @@ nnoremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
 noremap <silent><esc> <esc>:noh<CR><esc>
-
 nnoremap <F2> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 au FileType markdown nmap <leader>m :MarkdownPreview<CR>
@@ -321,7 +302,6 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
 nmap <silent> <C-a> <Plug>(coc-cursors-word)
