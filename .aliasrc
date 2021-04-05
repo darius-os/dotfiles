@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 
 alias \
-        emf="emacs -nw" \
-        emc="emacs -nw ." \
         el="exa -lh -F --icons" \
         exl="exa -lha -F --icons" \
         exla="exa -abghHliS -F --icons" \
@@ -12,8 +10,6 @@ alias \
         mkdir="mkdir -pv" \
         vi="nvim" \
         clr="clear" \
-        pget="sudo pacman -S" \
-        pdel="sudo pacman -R" \
         batt="sudo tlp-stat -b" \
         i8k='sudo modprobe i8k' \
         dell='sudo dell-bios-fan-control 0' \
@@ -30,10 +26,12 @@ alias \
         pubip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 alias \
+        pget="sudo pacman -S" \
+        pdel="sudo pacman -R" \
         packg="expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort | tail -n" \
         pacdv="pacman -Qq | grep -Ee '-(bzr|cvs|darcs|git|hg|svn)$'" \
         pkgfiles=" | grep -v '/$' | xargs du -h | sort -h'" \
-        rflctr="sudo reflector --latest 75 --protocol http --sort rate --save /etc/pacman.d/mirrorlist" \
+        rflctr="sudo reflector --verbose --latest 100 --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist" \
         yayqueryaur="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S" \
         yayquerydb="yay -Slq | fzf -m --preview 'yay -Si {1}'| xargs -ro yay -S"
 
