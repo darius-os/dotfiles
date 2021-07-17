@@ -63,12 +63,12 @@
                     "ugly": "\\|\\|",
                     "pretty": "∨"
                 },
-                // {
-                //     "ugly": "not\\s?",
-                //     "pretty": "¬",
-                //     "pre": "\\b",
-                //     "post": "\\b"
-                // },
+                {
+                    "ugly": "not\\s?",
+                    "pretty": "¬",
+                    "pre": "\\b",
+                    "post": "\\b"
+                },
                 // {
                 //     "ugly": ">",
                 //     "pretty": ">",
