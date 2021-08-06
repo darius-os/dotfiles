@@ -61,9 +61,7 @@ myBorderWidth   = 2         -- Sets border width for windows
 windowCount     = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 main = do
-    -- Launching xmobar.
     xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobarrc"
-        -- the xmonad, ya know...what the WM is named after!
     xmonad $ ewmh desktopConfig
         { manageHook = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageHook desktopConfig <+> manageDocks
         , logHook = dynamicLogWithPP xmobarPP
@@ -96,7 +94,6 @@ myColorizer = colorRangeFromClassName
                   (0xc0,0xa7,0x9a) -- inactive fg
                   (0xff,0xff,0xff) -- active fg
 
--- gridSelect menu layout
 mygridConfig colorizer = (buildDefaultGSConfig myColorizer)
     { gs_cellheight   = 30
     , gs_cellwidth    = 200
@@ -109,7 +106,6 @@ mygridConfig colorizer = (buildDefaultGSConfig myColorizer)
 spawnSelected' :: [(String, String)] -> X ()
 spawnSelected' lst = gridselect conf lst >>= flip whenJust spawn
     where conf = def
-
 
 myKeys =
     --- Xmonad
@@ -227,10 +223,6 @@ myManageHook = composeAll
         className =? "XCalc"        --> doFloat
       , (className =? "Firefox-esr" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      ] <+> namedScratchpadManageHook myScratchPads
-
-------------------------------------------------------------------------
----LAYOUTS
-------------------------------------------------------------------------
 
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
                mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ myDefaultLayout
