@@ -53,9 +53,9 @@ import XMonad.Layout.IM (withIM, Property(Role))
     -- Prompts
 import XMonad.Prompt (defaultXPConfig, XPConfig(..), XPPosition(Top), Direction1D(..))
 
-myFont          = "xft:Sans:regular:pixelsize=12"
+myFont          = "xft:PragmataPro:regular:pixelsize=12"
 myModMask       = mod4Mask  -- Sets modkey to super/windows key
-myTerminal      = "urxvt"      -- Sets default terminal
+myTerminal      = "alacritty"      -- Sets default terminal
 myTextEditor    = "nvim"     -- Sets default text editor
 myBorderWidth   = 2         -- Sets border width for windows
 windowCount     = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -125,12 +125,12 @@ myKeys =
     --- Grid Select
         , (("M-S-t"), spawnSelected'
           [ ("Mc", "urxvt -e mc")
-          , ("Audacious", "audacious")
+          , ("VLC", "vlc")
           , ("Cmus", "urxvt -e cmus")
           , ("Htop", "urxvt -e htop")
           , ("Volume Control", "pavucontrol")
           , ("Vim", "urxvt -e vim")
-          , ("Firefox", "firefox-esr")
+          , ("Brave", "brave")
           , ("Ranger", "urxvt -e ranger")
           , ("Urxvt", "urxvt")
           , ("Lxappearance",    "lxappearance")
